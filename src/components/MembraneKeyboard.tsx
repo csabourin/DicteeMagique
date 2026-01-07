@@ -8,8 +8,6 @@ interface KeyboardProps {
     disabled?: boolean;
 }
 
-const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ-'."; // A-Z plus special chars logic? No, just A-Z usually. Standard T.I. layout was ABC...
-
 // The original Speak & Spell has A-M top row, N-Z bottom row roughly.
 // Or a grid 5x? 
 // Let's use a standard grid for usability but styled like the original.

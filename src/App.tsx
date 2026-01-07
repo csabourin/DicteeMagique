@@ -5,7 +5,6 @@ import { MembraneKeyboard } from './components/MembraneKeyboard';
 import { ListManager } from './components/ListManager';
 import { useGame } from './hooks/useGame';
 import { WordList } from './types';
-import { getActiveListId, getLists } from './lib/storage';
 
 function App() {
     const {

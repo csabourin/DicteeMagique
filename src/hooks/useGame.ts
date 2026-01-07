@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { WordList, GameState } from '../types';
 import { tts } from '../lib/tts';
 
