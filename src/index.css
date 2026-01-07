@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .font-digital {
+    font-family: 'Courier New', monospace; /* Temporary fallback */
+  }
+}
