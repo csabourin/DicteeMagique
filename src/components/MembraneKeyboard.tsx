@@ -24,7 +24,7 @@ export function MembraneKeyboard({ onKeyPress, onEnter, onClear, onReplay, disab
     const accents = "ÉÈÀÇ".split('');
 
     return (
-        <div className="grid grid-cols-5 gap-2 sm:gap-3 p-2 sm:p-4 bg-[#A04000] rounded-xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.4)] flex-1 content-center overflow-y-auto min-h-0">
+        <div className="grid grid-cols-5 gap-2 sm:gap-3 p-2 sm:p-4 bg-[#A04000] rounded-xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.4)] flex-1 content-start overflow-y-auto min-h-0">
             {/* Letters */}
             {letters.map((char) => (
                 <MembraneButton
