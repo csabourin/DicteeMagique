@@ -57,7 +57,7 @@ function App() {
             <RetroShell>
 
                 {/* Screen Area */}
-                <div className="mb-8 relative" onClick={() => setShowListManager(true)}>
+                <div className="mb-4 sm:mb-8 relative shrink-0" onClick={() => setShowListManager(true)}>
                     <VFDDisplay
                         text={getDisplayText()}
                         isBlinking={gameState.status === 'WAITING_INPUT' && gameState.input.length === 0}
@@ -76,7 +76,7 @@ function App() {
                 />
 
                 {/* Control Buttons (Discreet) */}
-                <div className="mt-8 flex justify-center">
+                <div className="mt-4 sm:mt-8 flex justify-center shrink-0">
                     <button
                         onClick={() => setShowListManager(true)}
                         className="text-[#803000] text-sm font-bold uppercase tracking-widest opacity-50 hover:opacity-100"

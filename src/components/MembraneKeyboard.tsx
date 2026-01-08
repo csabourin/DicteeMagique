@@ -21,9 +21,10 @@ interface KeyboardProps {
 
 export function MembraneKeyboard({ onKeyPress, onEnter, onClear, onReplay, disabled }: KeyboardProps) {
     const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+    const accents = "ÉÈÀÇ".split('');
 
     return (
-        <div className="grid grid-cols-5 gap-3 p-4 bg-[#A04000] rounded-xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.4)]">
+        <div className="grid grid-cols-5 gap-2 sm:gap-3 p-2 sm:p-4 bg-[#A04000] rounded-xl shadow-[inset_0_2px_8px_rgba(0,0,0,0.4)] flex-1 content-center overflow-y-auto min-h-0">
             {/* Letters */}
             {letters.map((char) => (
                 <MembraneButton
@@ -34,7 +35,30 @@ export function MembraneKeyboard({ onKeyPress, onEnter, onClear, onReplay, disab
                 />
             ))}
 
-            {/* Special Keys */}
+            {/* Accents Row (New) */}
+            {accents.map((char) => (
+                <MembraneButton
+                    key={char}
+                    label={char}
+                    variant="letter"
+                    className="bg-[#E67E22]" // Slightly different shade for accents?
+                    onClick={() => onKeyPress(char)}
+                    disabled={disabled}
+                />
+            ))}
+
+            {/* Spacer to fill the row if needed, or just flow? 
+                26 letters. 
+                + 4 accents = 30 keys. Perfect 5x6 grid.
+                Wait, 30 keys fills 6 rows exactly.
+            */}
+
+            {/* Special Keys - Need to be strategically placed or added after */
+                /* Currently: Clear (2), Replay (1), Enter (2) = 5 slots.
+                   So we have 30 keys (letters+accents) + 5 specials = 35 slots = 7 rows of 5. Perfect.
+                */
+            }
+
             <MembraneButton
                 variant="special"
                 label="EFFACER"
@@ -46,7 +70,6 @@ export function MembraneKeyboard({ onKeyPress, onEnter, onClear, onReplay, disab
             <MembraneButton
                 variant="special"
                 label="RÉPÉTER"
-                // icon? 
                 className="col-span-1"
                 onClick={onReplay}
                 disabled={disabled}

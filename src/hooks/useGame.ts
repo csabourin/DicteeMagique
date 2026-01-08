@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { WordList, GameState } from '../types';
 import { tts } from '../lib/tts';
 
@@ -48,11 +48,16 @@ export function useGame() {
 
     const handleInput = useCallback((char: string) => {
         setGameState(prev => {
+            // Allow input in IDLE for initial "wake up" or just waiting
             if (prev.status !== 'WAITING_INPUT') return prev;
-            if (prev.input.length >= 10) return prev; // Max length safety
+            if (prev.input.length >= 10) return prev;
+
+            // Normalize input? No, we want to allow accents now.
             return { ...prev, input: prev.input + char };
         });
     }, []);
+
+
 
     const handleClear = useCallback(() => {
         setGameState(prev => ({ ...prev, input: '' }));
@@ -131,6 +136,29 @@ export function useGame() {
             };
         });
     };
+
+    // Physical Keyboard Listener
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            const key = e.key.toUpperCase();
+
+            if (key === 'ENTER') {
+                handleEnter();
+                return;
+            }
+            if (key === 'BACKSPACE') {
+                handleClear();
+                return;
+            }
+
+            if ("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-'.ÉÈÀÇÙ".includes(key)) {
+                handleInput(key);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [handleEnter, handleInput, handleClear]);
 
     return {
         gameState,

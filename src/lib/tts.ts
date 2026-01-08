@@ -32,7 +32,17 @@ export class TTSService {
             utterance.onend = onEnd;
         }
 
-        window.speechSynthesis.speak(utterance);
+        // iOS/Safari quirk: sometimes needs to be resumed
+        if (window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+        }
+
+        try {
+            window.speechSynthesis.speak(utterance);
+        } catch (e) {
+            console.error("TTS Error:", e);
+            // Fallback?
+        }
     }
 
     speakWord(word: string, onEnd?: () => void) {
