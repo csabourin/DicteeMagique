@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { WordList } from '../types';
 import { saveList, getLists, setActiveListId, deleteList } from '../lib/storage';
+import { DEFAULT_LISTS } from '../data/defaults';
 
 interface ListManagerProps {
     onSelect: (list: WordList) => void;
@@ -18,7 +19,23 @@ export function ListManager({ onSelect, onClose }: ListManagerProps) {
     }, []);
 
     const loadLists = async () => {
-        const loaded = await getLists();
+        let loaded = await getLists();
+
+        // Initial population
+        if (loaded.length === 0) {
+            const now = Date.now();
+            for (const def of DEFAULT_LISTS) {
+                const list: WordList = {
+                    id: crypto.randomUUID(),
+                    name: def.name,
+                    words: def.words,
+                    createdAt: now
+                };
+                await saveList(list);
+            }
+            loaded = await getLists();
+        }
+
         setLists(loaded);
     };
 
