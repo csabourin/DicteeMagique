@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { tts } from '../lib/tts';
-import { getDeterminer, getRandomCompliment } from '../lib/language';
+import { getRandomCompliment } from '../lib/language';
+import { GameState, WordList } from '../types';
 
 export function useGame() {
     const [gameState, setGameState] = useState<GameState>({
@@ -14,7 +15,6 @@ export function useGame() {
     });
 
     const [message, setMessage] = useState<string>('');
-    const [useDeterminer, setUseDeterminer] = useState(false);
 
     const startGame = useCallback((list: WordList) => {
         // Shuffle words
@@ -35,7 +35,7 @@ export function useGame() {
         setTimeout(() => {
             playWord(shuffled[0]);
         }, 1000);
-    }, [useDeterminer]);
+    }, []);
 
     const playWord = (word: string) => {
         setGameState(prev => ({
@@ -46,10 +46,7 @@ export function useGame() {
         }));
         setMessage("ÉCOUTE");
 
-        let textToSpeak = word;
-        if (useDeterminer) {
-            textToSpeak = getDeterminer(word) + word;
-        }
+        const textToSpeak = word;
 
         tts.speak(textToSpeak, () => {
             setGameState(prev => ({ ...prev, status: 'WAITING_INPUT' }));
@@ -79,7 +76,7 @@ export function useGame() {
         if (word && gameState.status === 'WAITING_INPUT') {
             playWord(word);
         }
-    }, [gameState, useDeterminer]);
+    }, [gameState]);
 
     const handleEnter = useCallback(() => {
         const { shuffledWords, currentWordIndex, input, attempts } = gameState;
@@ -188,8 +185,6 @@ export function useGame() {
         handleInput,
         handleClear,
         handleEnter,
-        handleReplay,
-        setUseDeterminer,
-        useDeterminer
+        handleReplay
     };
 }

@@ -15,9 +15,7 @@ function App() {
         handleClear,
         handleEnter,
         handleReplay,
-        setUseDeterminer,
-        useDeterminer
-    } = useGame();
+        handleReplay
 
     const [showListManager, setShowListManager] = useState(false);
     const [isInitializing, setIsInitializing] = useState(true);
@@ -84,13 +82,6 @@ function App() {
                         className="text-[#803000] text-sm font-bold uppercase tracking-widest opacity-50 hover:opacity-100"
                     >
                         {gameState.activeList ? `Liste: ${gameState.activeList.name}` : "Choisir une liste"}
-                    </button>
-
-                    <button
-                        onClick={() => setUseDeterminer(!useDeterminer)}
-                        className={`text-xs px-2 py-1 rounded font-bold uppercase ${useDeterminer ? 'bg-[#803000] text-retro-orange' : 'bg-transparent text-[#803000]/50 border border-[#803000]/30'}`}
-                    >
-                        {useDeterminer ? "Avec Déterminant" : "Sans Déterminant"}
                     </button>
                 </div>
 
