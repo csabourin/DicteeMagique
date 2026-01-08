@@ -50,7 +50,7 @@ export function useGame() {
         setGameState(prev => {
             // Allow input in IDLE for initial "wake up" or just waiting
             if (prev.status !== 'WAITING_INPUT') return prev;
-            if (prev.input.length >= 10) return prev;
+            if (prev.input.length >= 16) return prev; // Increased for longer words (Pourcentage etc)
 
             // Normalize input? No, we want to allow accents now.
             return { ...prev, input: prev.input + char };
