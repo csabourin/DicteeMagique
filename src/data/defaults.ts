@@ -1,7 +1,8 @@
 import { WordList } from '../types';
 
-export const DEFAULT_LISTS: Omit<WordList, 'id' | 'createdAt'>[] = [
+export const DEFAULT_LISTS: Omit<WordList, 'createdAt'>[] = [
     {
+        id: "default-week-3",
         name: "Semaine 3",
         words: [
             "BARRAGE", "BEIGE", "ÉLEVAGE", "NAUFRAGE", "GARAGE",
@@ -10,6 +11,7 @@ export const DEFAULT_LISTS: Omit<WordList, 'id' | 'createdAt'>[] = [
         ]
     },
     {
+        id: "default-week-4",
         name: "Semaine 4",
         words: [
             "SEAU", "SPORT", "SAUCE", "SALETÉ", "SÈVE",
@@ -20,6 +22,7 @@ export const DEFAULT_LISTS: Omit<WordList, 'id' | 'createdAt'>[] = [
         ]
     },
     {
+        id: "default-week-5",
         name: "Semaine 5",
         words: [
             "ÉVIDENTE", "EXCELLENTE", "CLIENTE", "PARACHUTE", "ÉTROITE",

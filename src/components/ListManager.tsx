@@ -26,7 +26,7 @@ export function ListManager({ onSelect, onClose }: ListManagerProps) {
             const now = Date.now();
             for (const def of DEFAULT_LISTS) {
                 const list: WordList = {
-                    id: crypto.randomUUID(),
+                    id: def.id,
                     name: def.name,
                     words: def.words,
                     createdAt: now

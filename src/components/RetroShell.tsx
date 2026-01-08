@@ -36,7 +36,7 @@ export function RetroShell({ children }: ShellProps) {
                 </div>
 
                 {/* Glossy highlights on the case */}
-                <div className="absolute top-4 left-4 w-full h-[200px] bg-gradient-to-b from-white/20 to-transparent rounded-[30px] pointer-events-none" />
+                <div className="absolute top-4 right-4 w-full h-[200px] bg-gradient-to-b from-white/20 to-transparent rounded-[30px] pointer-events-none" />
             </div>
         </div>
     );
