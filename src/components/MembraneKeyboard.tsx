@@ -62,7 +62,7 @@ export function MembraneKeyboard({ onKeyPress, onEnter, onClear, onReplay, disab
             <MembraneButton
                 variant="special"
                 label="EFFACER"
-                className="col-span-2 text-sm"
+                className="col-span-2 text-sm !aspect-[2/1]"
                 onClick={onClear}
                 disabled={disabled}
             />
@@ -78,7 +78,7 @@ export function MembraneKeyboard({ onKeyPress, onEnter, onClear, onReplay, disab
             <MembraneButton
                 variant="action"
                 label="ENTRÉE"
-                className="col-span-2"
+                className="col-span-2 !aspect-[2/1]"
                 onClick={onEnter}
                 disabled={disabled}
             />
