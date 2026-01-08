@@ -12,4 +12,5 @@ export interface GameState {
     input: string;
     score: number;
     activeList: WordList | null;
+    shuffledWords: string[];
 }

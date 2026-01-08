@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
-import { WordList, GameState } from '../types';
 import { tts } from '../lib/tts';
+import { getDeterminer, getRandomCompliment } from '../lib/language';
 
 export function useGame() {
     const [gameState, setGameState] = useState<GameState>({
@@ -9,27 +9,33 @@ export function useGame() {
         attempts: 0,
         input: '',
         score: 0,
-        activeList: null
+        activeList: null,
+        shuffledWords: []
     });
 
     const [message, setMessage] = useState<string>('');
+    const [useDeterminer, setUseDeterminer] = useState(false);
 
     const startGame = useCallback((list: WordList) => {
+        // Shuffle words
+        const shuffled = [...list.words].sort(() => Math.random() - 0.5);
+
         setGameState({
             status: 'IDLE',
             currentWordIndex: 0,
             attempts: 0,
             input: '',
             score: 0,
-            activeList: list
+            activeList: list,
+            shuffledWords: shuffled
         });
         setMessage(`PRÊT ?`);
 
         // Small delay before starting
         setTimeout(() => {
-            playWord(list.words[0]);
+            playWord(shuffled[0]);
         }, 1000);
-    }, []);
+    }, [useDeterminer]);
 
     const playWord = (word: string) => {
         setGameState(prev => ({
@@ -40,7 +46,12 @@ export function useGame() {
         }));
         setMessage("ÉCOUTE");
 
-        tts.speakWord(word, () => {
+        let textToSpeak = word;
+        if (useDeterminer) {
+            textToSpeak = getDeterminer(word) + word;
+        }
+
+        tts.speak(textToSpeak, () => {
             setGameState(prev => ({ ...prev, status: 'WAITING_INPUT' }));
             setMessage("");
         });
@@ -64,17 +75,17 @@ export function useGame() {
     }, []);
 
     const handleReplay = useCallback(() => {
-        const word = gameState.activeList?.words[gameState.currentWordIndex];
+        const word = gameState.shuffledWords[gameState.currentWordIndex];
         if (word && gameState.status === 'WAITING_INPUT') {
-            tts.speakWord(word);
+            playWord(word);
         }
-    }, [gameState]);
+    }, [gameState, useDeterminer]);
 
     const handleEnter = useCallback(() => {
-        const { activeList, currentWordIndex, input, attempts } = gameState;
-        if (!activeList || gameState.status !== 'WAITING_INPUT') return;
+        const { shuffledWords, currentWordIndex, input, attempts } = gameState;
+        if (!shuffledWords || gameState.status !== 'WAITING_INPUT') return;
 
-        const targetWord = activeList.words[currentWordIndex];
+        const targetWord = shuffledWords[currentWordIndex];
 
         setGameState(prev => ({ ...prev, status: 'CHECKING' }));
 
@@ -85,7 +96,7 @@ export function useGame() {
             }
 
             setMessage("BRAVO");
-            tts.speak("C'est exact !"); // Or "Très bien"
+            tts.speak(getRandomCompliment());
             setTimeout(() => {
                 nextWord();
             }, 2000);
@@ -121,12 +132,12 @@ export function useGame() {
     const nextWord = () => {
         setGameState(prev => {
             const nextIndex = prev.currentWordIndex + 1;
-            if (nextIndex >= (prev.activeList?.words.length || 0)) {
+            if (nextIndex >= (prev.shuffledWords?.length || 0)) {
                 // End of list
-                const total = prev.activeList?.words.length || 0;
+                const total = prev.shuffledWords?.length || 0;
                 const finalScore = prev.score;
 
-                // Slight hack: The score update from handleEnter might be processed in this same tick if we are not careful? 
+                // Slight hack: The score update from handleEnter might be processed in this same tick if we are not careful?
                 // Actually handleEnter ran 2s ago. So prev.score is accurate.
 
                 setMessage(`SCORE ${finalScore}/${total}`);
@@ -135,7 +146,7 @@ export function useGame() {
             }
 
             // Play next
-            const nextWord = prev.activeList!.words[nextIndex];
+            const nextWord = prev.shuffledWords[nextIndex];
             // Use timeout to break stack/render cycle slightly and allow state update
             setTimeout(() => playWord(nextWord), 500);
 
@@ -177,6 +188,8 @@ export function useGame() {
         handleInput,
         handleClear,
         handleEnter,
-        handleReplay
+        handleReplay,
+        setUseDeterminer,
+        useDeterminer
     };
 }

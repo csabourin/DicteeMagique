@@ -14,7 +14,9 @@ function App() {
         handleInput,
         handleClear,
         handleEnter,
-        handleReplay
+        handleReplay,
+        setUseDeterminer,
+        useDeterminer
     } = useGame();
 
     const [showListManager, setShowListManager] = useState(false);
@@ -62,7 +64,7 @@ function App() {
                         text={getDisplayText()}
                         isBlinking={gameState.status === 'WAITING_INPUT' && gameState.input.length === 0}
                     />
-                    {/* Invisible trigger for list manager on screen tap for simplicity on iPad, 
+                    {/* Invisible trigger for list manager on screen tap for simplicity on iPad,
                  or a dedicated button below? */}
                 </div>
 
@@ -76,12 +78,19 @@ function App() {
                 />
 
                 {/* Control Buttons (Discreet) */}
-                <div className="mt-4 sm:mt-8 flex justify-center shrink-0">
+                <div className="mt-4 sm:mt-8 flex gap-4 justify-center shrink-0 items-center">
                     <button
                         onClick={() => setShowListManager(true)}
                         className="text-[#803000] text-sm font-bold uppercase tracking-widest opacity-50 hover:opacity-100"
                     >
                         {gameState.activeList ? `Liste: ${gameState.activeList.name}` : "Choisir une liste"}
+                    </button>
+
+                    <button
+                        onClick={() => setUseDeterminer(!useDeterminer)}
+                        className={`text-xs px-2 py-1 rounded font-bold uppercase ${useDeterminer ? 'bg-[#803000] text-retro-orange' : 'bg-transparent text-[#803000]/50 border border-[#803000]/30'}`}
+                    >
+                        {useDeterminer ? "Avec Déterminant" : "Sans Déterminant"}
                     </button>
                 </div>
 
