@@ -14,8 +14,8 @@ function App() {
         handleInput,
         handleClear,
         handleEnter,
-        handleReplay,
         handleReplay
+    } = useGame();
 
     const [showListManager, setShowListManager] = useState(false);
     const [isInitializing, setIsInitializing] = useState(true);
