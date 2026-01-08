@@ -80,6 +80,10 @@ export function useGame() {
 
         if (input === targetWord) {
             // Success
+            if (attempts === 0) {
+                setGameState(prev => ({ ...prev, score: prev.score + 1 }));
+            }
+
             setMessage("BRAVO");
             tts.speak("C'est exact !"); // Or "Très bien"
             setTimeout(() => {
@@ -119,8 +123,14 @@ export function useGame() {
             const nextIndex = prev.currentWordIndex + 1;
             if (nextIndex >= (prev.activeList?.words.length || 0)) {
                 // End of list
-                setMessage("FINI !");
-                tts.speak("La dictée est terminée.");
+                const total = prev.activeList?.words.length || 0;
+                const finalScore = prev.score;
+
+                // Slight hack: The score update from handleEnter might be processed in this same tick if we are not careful? 
+                // Actually handleEnter ran 2s ago. So prev.score is accurate.
+
+                setMessage(`SCORE ${finalScore}/${total}`);
+                tts.speak(`La dictée est terminée. Ton score est de ${finalScore} sur ${total}`);
                 return { ...prev, status: 'GAME_OVER' };
             }
 
